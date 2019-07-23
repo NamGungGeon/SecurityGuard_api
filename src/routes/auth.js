@@ -8,6 +8,6 @@ const auth = Router();
 
 auth.post('/signin', signin);
 auth.post('/signup', signup);
-auth.get('/token', getToken);
+auth.post('/token', getToken);
 
 export default auth;
