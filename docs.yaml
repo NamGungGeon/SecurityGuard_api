@@ -1,0 +1,635 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "Security Guard"
+  license:
+    name: MIT
+servers:
+  - url: "http://15.164.190.194"
+paths:
+  /app:
+    get:
+      summary: Get version of app
+      operationId: getAppVersion
+      tags: [app]
+      responses:
+        200:
+          $ref: '#/components/responses/app'
+    put:
+      summary: Update version of app
+      operationId: updateAppVersion
+      tags: [app]
+      requestBody:
+        $ref: '#/components/requestBodies/app'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /ad:
+    get:
+      summary: Get all advertisements
+      operationId: getAllAds
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ad'
+    post:
+      summary: Add advertisements
+      operationId: addAd
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      requestBody:
+        $ref: '#/components/requestBodies/Ad'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /ad/{id}:
+    get:
+      summary: Get advertisement
+      operationId: getAd
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ad'
+    put:
+      summary: Update advertisement
+      operationId: updateAd
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      requestBody:
+        $ref: '#/components/requestBodies/Ad'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete advertisement
+      operationId: deleteAd
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /auth/signin:
+    post:
+      summary: Sign in
+      operationId: signIn
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                password:
+                  type: string
+            examples:
+              user:
+                value:
+                  id: smk0107
+                  password: password123
+      responses:
+        200:
+          $ref: '#/components/responses/auth'
+  /auth/signup:
+    post:
+      summary: Sign up
+      operationId: signUp
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                password:
+                  type: string
+            examples:
+              user:
+                value:
+                  id: smk0107
+                  name: 신문기
+                  password: password123
+      responses:
+        200:
+          $ref: '#/components/responses/auth'
+  /auth/token:
+    post:
+      summary: Get access token
+      operationId: getAccessToken
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        200:
+          description: Return access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+  /users:
+    get:
+      summary: List all users
+      operationId: listUsers
+      tags: [user]
+      parameters: 
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        200:
+          $ref: '#/components/responses/users'
+  /users/{id}:
+    get:
+      summary: Info for a specfic user
+      operationId: showUserById
+      tags: [user]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          $ref: '#/components/responses/user'
+    patch:
+      summary: Update a user
+      operationId: updateUser
+      security: 
+        - BearerAuth: [user]
+      tags: [user]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete a user
+      operationId: deleteUser
+      security: 
+        - BearerAuth: [user]
+      tags: [user]
+      parameters: 
+        - $ref: '#/components/parameters/id'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /users/{id}/logs:
+    parameters: 
+        - $ref: '#/components/parameters/id'
+    get:
+      summary: Get logs of user
+      operationId: getUserLogs
+      tags: [user]
+      security: 
+        - BearerAuth: [user]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Log'
+    post:
+      summary: Add logs of user
+      operationId: addUserLogs
+      tags: [user]
+      security: 
+        - BearerAuth: [user]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete logs of user
+      operationId: deleteUserLogs
+      tags: [user]
+      security: 
+        - BearerAuth: [user]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /users/{id}/emergency:
+    parameters: 
+        - $ref: '#/components/parameters/id'
+    post:
+      summary: Set user to emergency state
+      operationId: setUserEmergency
+      tags: [user]
+      security: 
+        - BearerAuth: [user]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Set user to unemergency state
+      operationId: setUserUnemergency
+      tags: [user]
+      security: 
+        - BearerAuth: [user]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /notices:
+    get:
+      summary: Get all notices
+      operationId: getAllNotices
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
+      parameters: 
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+      responses:
+        200:
+          $ref: '#/components/responses/notices'
+    post:
+      summary: Add notice
+      operationId: addNotice
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
+      requestBody:
+        $ref: '#/components/requestBodies/notice'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /notices/{id}:
+    parameters: 
+        - $ref: '#/components/parameters/id'
+    get:
+      summary: Get notice
+      operationId: getNotice
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        200:
+          $ref: '#/components/responses/notice'
+    put:
+      summary: Update notice
+      operationId: updateNotice
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
+      requestBody:
+        $ref: '#/components/requestBodies/notice'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete notice
+      operationId: deleteNotice
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /locations:
+    get:
+      summary: Get all locations
+      operationId: getAllLocations
+      tags: [location]
+      security: 
+      - BearerAuth: [admin]
+      parameters: 
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/distance'
+        - $ref: '#/components/parameters/lat'
+        - $ref: '#/components/parameters/lng'
+      responses:
+        200:
+          $ref: '#/components/responses/locations'
+    post:
+      summary: Add location
+      operationId: addLocation
+      tags: [location]
+      security: 
+      - BearerAuth: [admin]
+      requestBody:
+        $ref: '#/components/requestBodies/location'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+  /locations/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      summary: Get location
+      operationId: getLocation
+      tags: [location]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        200:
+          $ref: '#/components/responses/location'
+    patch:
+      summary: Update location
+      operationId: updateLocation
+      tags: [location]
+      security: 
+      - BearerAuth: [admin]
+      requestBody:
+        $ref: '#/components/requestBodies/location'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete location
+      operationId: deleteLocation
+      tags: [location]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+components:
+  responses:
+    app:
+      description: Return stable, latest version of app
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              stable:
+                type: string
+              latest:
+                type: string
+    204:
+      description: The request was successfully processed.
+    auth:
+      description: Return access token & refresh token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              accessToken:
+                type: string
+              refreshToken:
+                type: string
+    user:
+      description: Return user information
+      content:
+        applicataion/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    users:
+      description: Return information of user list
+      content:
+        applicataion/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+    notice:
+      description: Return notice
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/notice'
+    notices:
+      description: Return notices
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/notice'
+    location:
+      description: Return location
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/location'
+    locations:
+        description: Return locations
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/location'
+  requestBodies:
+    app:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              stable:
+                type: string
+              latest:
+                type: string
+    location:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              lat:
+                type: number
+              lng:
+                type: number
+              level:
+                type: integer
+              name:
+                type: string
+    notice:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+    Ad:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              image:
+                type: string
+              link:
+                type: string
+  parameters:
+    id:
+      in: path
+      description: The id of resource
+      name: id
+      schema:
+        type: integer
+      required: true
+    limit:
+      in: query
+      name: limit
+      description: How many items to return at one time
+      required: false
+      schema:
+        type: integer
+        format: int32
+    offset:
+      in: query
+      name: offset
+      description: How many items to return at one time
+      required: false
+      schema:
+        type: integer
+        format: int32
+    lat:
+      in: query
+      name: lat
+      description: latitude
+      schema:
+        type: number
+        format: float
+        minimum: -90
+        maximum: 90
+        exclusiveMaximum: true
+        exclusiveMinimum: true
+    lng:
+      in: query
+      name: lng
+      description: longitude
+      schema:
+        type: number
+        format: float
+        minimum: -180
+        maximum: 180
+        exclusiveMaximum: true
+        exclusiveMinimum: true
+    distance:
+      in: query
+      name: distance
+      description: Get locations within 'distance' meters of the radius
+      schema:
+        type: number
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    notice:
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Ad:
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        image:
+          type: string
+        link:
+          type: string
+    User:
+      properties:
+        id:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum: [user, admin]
+          default: user
+        cash:
+          type: integer
+          default: 0
+        isEmergency:
+          type: boolean
+          default: false
+    location:
+      properties:
+        id:
+          type: integer
+        coord:
+          type: object
+          properties:
+            x:
+              type: integer
+            y:
+              type: integer
+        level:
+          type: integer
+        name:
+          type: string
+          default: ""
+    Log:
+      required: [coord]
+      properties:
+        id:
+          type: integer
+        coord:
+          type: object
+          properties:
+            x:
+              type: integer
+            y:
+              type: integer
+        user:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      
+        
