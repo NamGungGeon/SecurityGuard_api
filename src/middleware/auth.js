@@ -2,7 +2,7 @@ import model from '../model';
 import verifyToken from '../util/verifyToken';
 
 const auth = async (req, res, next) => {
-    const { authorization } = req.header;
+    const { authorization } = req.headers;
     if (!authorization) {
         return res.status(400).json({ message: 'Authorization header required.' });
     }

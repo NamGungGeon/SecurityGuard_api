@@ -10,6 +10,8 @@ import deleteUser from '../controller/user/deleteUser';
 import addUserLogs from '../controller/user/addUserLogs';
 import getUserLogs from '../controller/user/getUserLogs';
 import deleteUserLogs from '../controller/user/deleteUserLogs';
+import setUserEmergency from '../controller/user/setUserEmergency';
+import setUserUnemergency from '../controller/user/setUserUnemergency';
 
 const user = Router();
 
@@ -22,7 +24,7 @@ user.get('/:id/logs', auth ,identify, getUserLogs);
 user.post('/:id/logs', auth, identify, addUserLogs);
 user.delete('/:id/logs', auth, identify, deleteUserLogs);
 
-user.put('/:id/emergency');
-user.delete('/:id/emergency');
+user.post('/:id/emergency', auth, identify, setUserEmergency);
+user.delete('/:id/emergency', auth, identify, setUserUnemergency);
 
 export default user;

@@ -1,9 +1,12 @@
 import model from '../../model';
+import getPageOptions from '../../util/getPageOptions';
 
 const getUsers = async (req, res, next) => {
-    const { id } = req.query;
+    const pageOptions = getPageOptions(req.query);
     try {
-        const users = await model.User.findAll();
+        const users = await model.User.findAll({
+            ...pageOptions
+        });
         return res.json({ users });
     } catch (err) {
         next(err);
