@@ -8,4 +8,6 @@ ADD ./ /app
 
 RUN yarn 
 
-CMD yarn start
+EXPOSE 80
+
+CMD yarn deploy
