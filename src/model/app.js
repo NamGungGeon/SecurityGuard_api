@@ -4,13 +4,13 @@ class App extends Model {
     static init(sequelize) {
         const { STRING } = DataTyeps;
         return super.init({
-            minVersion: {
+            stable: {
                 type: STRING,
-                defaultValue: 0
+                allowNull: false
             },
-            currentVersion: {
+            latest: {
                 type: STRING,
-                defaultValue: 0
+                allowNull: false
             }
         }, {
             sequelize,
