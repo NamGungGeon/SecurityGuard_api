@@ -11,8 +11,8 @@ import deleteAd from '../controller/ad/deleteAd';
 
 const ad = Router();
 
-ad.get('/', auth, isAdmin, getAllAd);
-ad.get('/:id', auth, isAdmin, getAd);
+ad.get('/', getAllAd);
+ad.get('/:id', getAd);
 ad.post('/', auth, isAdmin, addAd);
 ad.put('/:id', auth, isAdmin, updateAd);
 ad.delete('/:id', auth, isAdmin, deleteAd);

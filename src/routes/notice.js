@@ -10,8 +10,8 @@ import deleteNotice from '../controller/notice/deleteNotice';
 
 const notice = Router();
 
-notice.get('/', auth, isAdmin, getAllNotice);
-notice.get('/:id', auth, isAdmin, getNotice);
+notice.get('/', getAllNotice);
+notice.get('/:id', getNotice);
 notice.post('/', auth, isAdmin, addNotice);
 notice.put('/:id', auth, isAdmin, updateNotice);
 notice.delete('/:id', auth, isAdmin, deleteNotice);

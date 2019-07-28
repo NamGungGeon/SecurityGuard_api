@@ -11,8 +11,8 @@ import deleteLocation from '../controller/location/deleteLocation';
 
 const location = Router();
 
-location.get('/', auth, isAdmin, getAllLocation);
-location.get('/:id', auth, isAdmin, getLocation);
+location.get('/', getAllLocation);
+location.get('/:id', getLocation);
 location.post('/', auth, isAdmin, addLocation);
 location.patch('/:id', auth, isAdmin, updateLocation);
 location.delete('/:id', auth, isAdmin, deleteLocation);

@@ -24,13 +24,11 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
-  /ad:
+  /ads:
     get:
       summary: Get all advertisements
       operationId: getAllAds
       tags: [ad]
-      security: 
-      - BearerAuth: [admin]
       responses:
         200:
           description: OK
@@ -51,13 +49,11 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
-  /ad/{id}:
+  /ads/{id}:
     get:
       summary: Get advertisement
       operationId: getAd
       tags: [ad]
-      security: 
-      - BearerAuth: [admin]
       parameters: 
         - $ref: '#/components/parameters/id'
       responses:
@@ -171,6 +167,8 @@ paths:
       summary: List all users
       operationId: listUsers
       tags: [user]
+      security: 
+      - BearerAuth: [admin]
       parameters: 
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
@@ -182,6 +180,8 @@ paths:
       summary: Info for a specfic user
       operationId: showUserById
       tags: [user]
+      security: 
+      - BearerAuth: [admin]
       parameters: 
         - $ref: '#/components/parameters/id'
       responses:
@@ -271,8 +271,6 @@ paths:
       summary: Get all notices
       operationId: getAllNotices
       tags: [notice]
-      security: 
-      - BearerAuth: [admin]
       parameters: 
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
@@ -297,8 +295,6 @@ paths:
       summary: Get notice
       operationId: getNotice
       tags: [notice]
-      security: 
-      - BearerAuth: [admin]
       responses:
         200:
           $ref: '#/components/responses/notice'
@@ -327,8 +323,6 @@ paths:
       summary: Get all locations
       operationId: getAllLocations
       tags: [location]
-      security: 
-      - BearerAuth: [admin]
       parameters: 
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
@@ -356,8 +350,6 @@ paths:
       summary: Get location
       operationId: getLocation
       tags: [location]
-      security: 
-      - BearerAuth: [admin]
       responses:
         200:
           $ref: '#/components/responses/location'

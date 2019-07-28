@@ -12,11 +12,12 @@ import getUserLogs from '../controller/user/getUserLogs';
 import deleteUserLogs from '../controller/user/deleteUserLogs';
 import setUserEmergency from '../controller/user/setUserEmergency';
 import setUserUnemergency from '../controller/user/setUserUnemergency';
+import isAdmin from '../middleware/isAdmin';
 
 const user = Router();
 
-user.get('/', getUsers);
-user.get('/:id', getUser);
+user.get('/', auth, isAdmin, getUsers);
+user.get('/:id', auth, identify, getUser);
 user.patch('/:id', auth, identify, updateUser);
 user.delete('/:id', auth, identify, deleteUser);
 
