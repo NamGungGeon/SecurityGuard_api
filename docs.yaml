@@ -238,6 +238,9 @@ paths:
       tags: [user]
       security: 
         - BearerAuth: [user]
+      parameters:
+        - $ref: '#/components/parameters/lat'
+        - $ref: '#/components/parameters/lng'
       responses:
         204:
           $ref: '#/components/responses/204'
