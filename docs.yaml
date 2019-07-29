@@ -49,6 +49,15 @@ paths:
       responses:
         204:
           $ref: '#/components/responses/204'
+    delete:
+      summary: Delete all advertisements
+      operationId: deleteAllAd
+      tags: [ad]
+      security: 
+      - BearerAuth: [admin]
+      responses:
+        204:
+          $ref: '#/components/responses/204'
   /ads/{id}:
     get:
       summary: Get advertisement
@@ -176,14 +185,14 @@ paths:
         200:
           $ref: '#/components/responses/users'
   /users/{id}:
+    parameters: 
+      - $ref: '#/components/parameters/userId'
     get:
       summary: Info for a specfic user
       operationId: showUserById
       tags: [user]
       security: 
       - BearerAuth: [admin]
-      parameters: 
-        - $ref: '#/components/parameters/id'
       responses:
         200:
           $ref: '#/components/responses/user'
@@ -193,8 +202,6 @@ paths:
       security: 
         - BearerAuth: [user]
       tags: [user]
-      parameters: 
-        - $ref: '#/components/parameters/id'
       responses:
         204:
           $ref: '#/components/responses/204'
@@ -204,14 +211,12 @@ paths:
       security: 
         - BearerAuth: [user]
       tags: [user]
-      parameters: 
-        - $ref: '#/components/parameters/id'
       responses:
         204:
           $ref: '#/components/responses/204'
   /users/{id}/logs:
     parameters: 
-        - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/userId'
     get:
       summary: Get logs of user
       operationId: getUserLogs
@@ -247,7 +252,7 @@ paths:
           $ref: '#/components/responses/204'
   /users/{id}/emergency:
     parameters: 
-        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/userId'
     post:
       summary: Set user to emergency state
       operationId: setUserEmergency
@@ -285,6 +290,15 @@ paths:
       - BearerAuth: [admin]
       requestBody:
         $ref: '#/components/requestBodies/notice'
+      responses:
+        204:
+          $ref: '#/components/responses/204'
+    delete:
+      summary: Delete all notices
+      operationId: deleteAllNotice
+      tags: [notice]
+      security: 
+      - BearerAuth: [admin]
       responses:
         204:
           $ref: '#/components/responses/204'
@@ -491,6 +505,13 @@ components:
               link:
                 type: string
   parameters:
+    userId:
+      in: path
+      description: The id of user
+      name: id
+      schema:
+        type: string
+      required: true
     id:
       in: path
       description: The id of resource
